@@ -1,0 +1,8 @@
+{% load ng_filters %}
+
+<div class="form-group{% if field.errors %} has-error{% endif %}">
+    {{ field|add_class:"form-control" }}
+    <span class="help-block"><small><label class="control-label {{ field|required }}" for="{{ field.auto_id }}">{{ field.label }}</label></small></span>
+    {% if field.help_text %}<span class="help-block"><small>{{ field.help_text|safe }}</small></span>{% endif %}
+    {% for error in field.errors %}<span class="help-block"><small>{{ error }}</small></span>{% endfor %}
+</div>
