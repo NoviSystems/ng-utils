@@ -16,6 +16,9 @@ setup(
     url='https://github.com/itng/ng-utils/',
     author='Ryan P Kilby',
     author_email='rpkilby@ncsu.edu',
+
+    install_requires=['ordered-set', ],
+
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
