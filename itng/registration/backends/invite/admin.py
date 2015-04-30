@@ -1,9 +1,12 @@
 
 from django.conf.urls import url
+from django.core.urlresolvers import reverse
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
 from . import views
+
+User = get_user_model()
 
 
 class AdminInvitationView(views.InvitationView):
@@ -18,6 +21,11 @@ class AdminInvitationView(views.InvitationView):
             form, [(None, {'fields': [field.name for field in form]})], {},
         )
         return context
+
+    def get_success_url(self, user):
+        return reverse(
+            'admin:%s_%s_changelist' % (User._meta.app_label, User._meta.model_name, ),
+        )
 
 
 class UserInvitationAdmin(admin.ModelAdmin):

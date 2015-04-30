@@ -18,7 +18,11 @@ __all__ = (
 )
 
 
-InvitationView = RegistrationView
+class InvitationView(RegistrationView):
+    template_name = 'registration/invitation_form.html'
+
+    def get_success_url(self, user):
+        return reverse('invitation_complete', self.request)
 
 
 class InvitationCompleteView(TemplateView):
@@ -72,12 +76,12 @@ class ActivationView(FormView):
 
     def activate(self, *args, **kwargs):
         """
-        Given an activation key, look up and activate the user account corresponding to that key (if possible).
+        Given an activation key, look up and activate the user account corresponding to
+        that key (if possible).
 
-        After successful activation, the signal
-        ``registration.signals.user_activated`` will be sent, with the
-        newly activated ``User`` as the keyword argument ``user`` and
-        the class of this backend as the sender.
+        After successful activation, the signal ``registration.signals.user_activated``
+        will be sent, with the newly activated ``User`` as the keyword argument ``user``
+        and the class of this backend as the sender.
 
         """
         activation_key = kwargs.get('activation_key')
