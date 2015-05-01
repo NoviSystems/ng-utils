@@ -1,0 +1,12 @@
+
+{% load ng_filters %}
+
+{% if form.non_field_errors %}
+<div class="text-danger">
+{{ form.non_field_errors }}
+</div>
+{% endif %}
+
+{% for field in form %}
+{% include 'fields/inline.html' %}
+{% endfor %}
