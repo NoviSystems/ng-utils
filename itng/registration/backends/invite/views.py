@@ -5,12 +5,12 @@ from django.views.generic import TemplateView, FormView
 
 from itng.common.utils import reverse
 
-from registration import signals
-from registration.models import RegistrationProfile
+from registration import signals, utils
 
 from registration.backends.default.views import RegistrationView
 
 from .forms import ActivationForm
+from .models import RegistrationProfile
 
 __all__ = (
     'InvitationView', 'InvitationCompleteView',
@@ -20,6 +20,17 @@ __all__ = (
 
 class InvitationView(RegistrationView):
     template_name = 'registration/invitation_form.html'
+
+    def register(self, form):
+        site = utils.get_site(self.request)
+
+        new_user = form.save(commit=False)
+        # using the proxy model with the invitation manager
+        RegistrationProfile.objects.invite_user(new_user, site)
+        signals.user_registered.send(sender=self.__class__,
+                                     user=new_user,
+                                     request=self.request)
+        return new_user
 
     def get_success_url(self, user):
         return reverse('invitation_complete', self.request)
