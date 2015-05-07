@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-from . import views
+from . import forms, views
 
 User = get_user_model()
 
@@ -31,7 +31,7 @@ class AdminInvitationView(views.InvitationView):
 class UserInvitationAdmin(admin.ModelAdmin):
 
     def get_invite_form(self):
-        return self.add_form
+        return forms.InviteForm
 
     def get_urls(self):
         return [

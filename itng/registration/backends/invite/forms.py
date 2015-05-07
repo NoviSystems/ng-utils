@@ -4,6 +4,12 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 
 
+class InviteForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = (model.USERNAME_FIELD, ) + tuple(model.REQUIRED_FIELDS)
+
+
 class ActivationForm(forms.ModelForm):
     """
     Form for registering a new user account.

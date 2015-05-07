@@ -49,5 +49,9 @@ class RegistrationProfile(models.RegistrationProfile):
 
     objects = InvitationManager()
 
-    class Meta(models.RegistrationProfile.Meta):
+    # For some reason:
+    # class Meta(models.RegistrationProfile.Meta):
+    # AttributeError: type object 'RegistrationProfile' has no attribute 'Meta'
+    # wat.
+    class Meta:
         proxy = True

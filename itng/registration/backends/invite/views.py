@@ -9,7 +9,7 @@ from registration import signals, utils
 
 from registration.backends.default.views import RegistrationView
 
-from .forms import ActivationForm
+from .forms import InviteForm, ActivationForm
 from .models import RegistrationProfile
 
 __all__ = (
@@ -20,6 +20,7 @@ __all__ = (
 
 class InvitationView(RegistrationView):
     template_name = 'registration/invitation_form.html'
+    form_class = InviteForm
 
     def register(self, form):
         site = utils.get_site(self.request)
