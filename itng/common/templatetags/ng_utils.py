@@ -28,3 +28,23 @@ def add_class(value, css_classes):
 
     widget.attrs['class'] = " ".join(orig_classes | new_classes)
     return value
+
+
+@register.simple_tag(takes_context=True)
+def isactive(context, url, active, inactive=''):
+    """
+    A ternary tag for whether the URL is 'active'. An active URL is defined as matching
+    the start of the current request URL. For example, if `url` is '/some/path' and the
+    current request URL is '/some/path/some/subpath', then `active`s contents would be
+    rendered.
+
+    Example::
+
+        {% url 'named-url' as named_url %}
+        <div class="{% is_active named_url 'active' 'inactive' %}">
+        </div>
+
+    """
+    if context['request'].path_info.startswith(url):
+        return active
+    return inactive
