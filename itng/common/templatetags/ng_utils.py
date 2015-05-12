@@ -31,12 +31,13 @@ def add_class(value, css_classes):
 
 
 @register.simple_tag(takes_context=True)
-def isactive(context, url, active, inactive=''):
+def active(context, url, active, inactive='', exact=False):
     """
-    A ternary tag for whether the URL is 'active'. An active URL is defined as matching
-    the start of the current request URL. For example, if `url` is '/some/path' and the
-    current request URL is '/some/path/some/subpath', then `active`s contents would be
-    rendered.
+    A ternary tag for whether a URL is 'active'. An active URL is defined as matching
+    the current request URL. The default behavior is to match the beginning of the URL.
+    For example, if `url` is '/some/path' and the current request URL is
+    '/some/path/subpath', then the URL is considered active. If `exact` is set to True,
+    then the URL's must match exactly.
 
     Example::
 
@@ -45,6 +46,11 @@ def isactive(context, url, active, inactive=''):
         </div>
 
     """
-    if context['request'].path_info.startswith(url):
+    request_url = context['request'].path_info
+    if (request_url == url if exact else request_url.startswith(url)):
         return active
     return inactive
+
+
+# def ifactive
+# refer to {% ifequal %} implementation because it doesn't perform {% if %} condition parsing
