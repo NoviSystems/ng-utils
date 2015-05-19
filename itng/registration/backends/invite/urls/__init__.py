@@ -1,5 +1,5 @@
-import itng.registration.backends.invite.urls.activation as activation
-import itng.registration.backends.invite.urls.invitation as invitation
+from itng.registration.backends.invite.urls import activation
+from itng.registration.backends.invite.urls import invitation
 
 """
 Default URL conf for the ng-utils invite registration backend.
