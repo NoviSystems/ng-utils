@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.hashers import make_password
 
 
 class InviteForm(forms.ModelForm):
@@ -47,11 +48,11 @@ class ActivationForm(forms.ModelForm):
                 self.error_messages['password_mismatch'],
                 code='password_mismatch',
             )
-        return password2
+        return make_password(password2)
 
-    def save(self, commit=True):
-        user = super(ActivationForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-        return user
+    def clean(self):
+        password = make_password(self.cleaned_data.get('password1'))
+        self.cleaned_data['password'] = password
+        del self.cleaned_data['password1']
+        del self.cleaned_data['password2']
+        return self.cleaned_data

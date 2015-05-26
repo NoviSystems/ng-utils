@@ -74,7 +74,10 @@ class ActivationView(FormView):
     def form_valid(self, form):
         activated_user = self.activate(*self.args, **self.kwargs)
         if activated_user:
-            activated_user = form.save()
+            # We need to update the activated user with the form's cleaned_data since
+            # since calling form.save() will overwrite the activated user.
+            activated_user.__dict__.update(form.cleaned_data)
+            activated_user.save()
             signals.user_activated.send(sender=self.__class__,
                                         user=activated_user,
                                         request=self.request)
