@@ -1,0 +1,34 @@
+
+{% comment %}
+<!-- <div class='row-fluid transferselect'>
+    <div class="span5 ts-select-wrapper" >
+        <label>Available</label>
+        {{ available }}
+    </div>
+    <div class="span1">
+        <div class="btn-group center-text ts-btn-wrapper">
+            <button type="button" class="btn btn-small" {{ deselect_attrs }}><i class="icon-chevron-left"></i></button>
+            <button type="button" class="btn btn-small" {{ select_attrs }}><i class="icon-chevron-right"></i></button>
+        </div>
+    </div>
+    <div class="span5 ts-select-wrapper">
+        <label>Selected</label>
+        {{ selected }}
+    </div>
+</div> -->
+{% endcomment %}
+
+<div class='row-fluid transferselect'>
+    <div class="col-md-6 ts-select-wrapper" >
+        <div class="header">
+            <label for="{{ available_id }}">Available</label> [<button type="button" class="btn btn-xs btn-link" {{ select_attrs }}>Select</button>]
+        </div>
+        {{ available }}
+    </div>
+    <div class="col-md-6 ts-select-wrapper">
+        <div class="header">
+            <label for="{{ selected_id }}">Selected</label> [<button type="button" class="btn btn-xs btn-link" {{ deselect_attrs }}>Deselect</button>]
+        </div>
+        {{ selected }}
+    </div>
+</div>

@@ -1,0 +1,35 @@
+
+.transferselect {
+    position: relative;
+    margin-bottom: 10px;
+}
+.ts-select-wrapper {
+    background-color: #f9f9f9;
+}
+.transferselect .header {
+    border: 1px solid #cccccc;
+    border-bottom: 0px;
+    margin-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.transferselect .header label {
+    display: inline;
+    padding-right: 10px;
+}
+.transferselect select {
+    margin-bottom: 0px;
+    font-size: 12px;
+    border-radius: 0px;
+    width: 100%;
+}
+.ts-btn-wrapper {
+    height: 1.5em;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+}
+.ts-btn-wrapper .btn {
+    margin-top: -25%;
+}
