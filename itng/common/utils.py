@@ -1,5 +1,6 @@
 
 from django.core import urlresolvers
+from django.utils.encoding import smart_text
 
 
 def import_class(path):
@@ -51,3 +52,28 @@ def get_site(request):
         return Site.objects.get_current()
     else:
         return RequestSite(request)
+
+
+class ModelIterator(object):
+    def __init__(self, queryset):
+        self.queryset = queryset
+
+    def __iter__(self):
+        for obj in self.queryset.all():
+            yield self.proc(obj)
+
+    def __len__(self):
+        return len(self.queryset)
+
+    def proc(self, obj):
+        raise NotImplementedError('This method must be implemented.')
+
+
+class ModelPKIterator(ModelIterator):
+    def proc(self, obj):
+        return obj.pk
+
+
+class ModelChoiceIterator(ModelIterator):
+    def proc(self, obj):
+        return (obj.pk, smart_text(obj))
