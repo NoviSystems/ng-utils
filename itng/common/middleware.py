@@ -15,7 +15,7 @@ class LoginRequiredMiddleware(object):
 
     def __init__(self, *args, **kwargs):
         regexes = getattr(settings, 'LOGIN_EXEMPT_URLS', ())
-        self.regexes = map(re.compile, regexes)
+        self.regexes = list(map(re.compile, regexes))
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
         if request.user.is_authenticated() \
