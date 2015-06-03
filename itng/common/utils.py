@@ -45,7 +45,7 @@ def reverse(viewname, request, urlconf=None, args=None, kwargs=None, current_app
 
 
 def get_site(request):
-    from django.contrib.sites.models import RequestSite
+    from django.contrib.sites.requests import RequestSite
     from django.contrib.sites.models import Site
 
     if Site._meta.installed:
