@@ -13,7 +13,7 @@ class AdminInvitationView(views.InvitationView):
     template_name = 'admin/registration_invite.html'
 
     def get_context_data(self, **kwargs):
-        form = self.get_form()
+        form = self.get_form(self.get_form_class())
 
         context = super(AdminInvitationView, self).get_context_data(**kwargs)
         context['opts'] = get_user_model()._meta
