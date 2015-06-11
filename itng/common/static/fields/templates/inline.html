@@ -1,0 +1,9 @@
+<div class="form-group" v-class="has-error : hasError">
+    <label class="control-label {{ labelClass }}" v-class="required: required" for="{{ inputId }}">{{ label }}</label>
+
+    <div class="{{ inputClass }}">
+        <content></content>
+        <span class="help-block" v-if="helpText">{{{ helpText }}}</span>
+        <span class="help-block" v-repeat="error: errors">{{{ error }}}</span>
+    </div>
+</div>
