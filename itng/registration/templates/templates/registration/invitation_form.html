@@ -1,0 +1,36 @@
+
+{% extends auth_base|default:"base.html" %}
+
+{% load ng_utils %}
+
+{% block content %}
+{{ block.super }}
+<div class="row">
+    <div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+        <form role="form" method="POST">
+            {% csrf_token %}
+            <div class="panel panel-primary">
+
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ title }}</h3>
+                </div>
+
+                <div class="panel-body">
+                    {% for field in form %}
+                    <div class="form-group form-field">
+                        {{ field.label_tag }}
+                        {{ field|add_class:"form-control" }}
+                        {% for error in field.errors %}{{ error }}{% endfor %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="text-right">
+                        {% block cancel %}{% endblock %}
+                        <button class="btn btn-md btn-primary" action="submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
