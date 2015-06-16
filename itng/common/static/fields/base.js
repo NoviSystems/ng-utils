@@ -4,15 +4,14 @@ import _ from 'underscore';
 import Vue from 'vue';
 
 
-var Field = Vue.extend({
-    paramAttributes: ['label', 'help-text', 'required', 'errors'],
-    inherit: true,
+export default Vue.extend({
+    props: ['label', 'help-text', 'required', 'errors'],
 
     data: function () {
         return {
             inputId: null,
             hasError: false,
-        }
+        };
     },
 
     attached: function () {
@@ -21,6 +20,4 @@ var Field = Vue.extend({
         this.inputId = $input.attr('id');
         this.hasError = !_.isEmpty(this.errors);
     },
-})
-
-export default Field;
+});
