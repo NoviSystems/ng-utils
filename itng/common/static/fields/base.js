@@ -18,6 +18,11 @@ export default Vue.extend({
         var $input = $(this.$el).find('input');
         $input.addClass('form-control');
         this.inputId = $input.attr('id');
-        this.hasError = !_.isEmpty(this.errors);
+    },
+
+    computed: {
+        hasError: function () {
+            return !_.isEmpty(this.errors);
+        },
     },
 });
