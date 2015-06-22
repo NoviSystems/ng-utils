@@ -31,7 +31,7 @@ def add_class(value, css_classes):
 
 
 @register.simple_tag(takes_context=True)
-def active(context, url, active, inactive='', exact=False):
+def isactive(context, url, active='active', inactive='', exact=False):
     """
     A ternary tag for whether a URL is 'active'. An active URL is defined as matching
     the current request URL. The default behavior is to match the beginning of the URL.
@@ -42,7 +42,7 @@ def active(context, url, active, inactive='', exact=False):
     Example::
 
         {% url 'named-url' as named_url %}
-        <div class="{% is_active named_url 'active' 'inactive' %}">
+        <div class="{% isactive named_url 'active' 'inactive' %}">
         </div>
 
     """
