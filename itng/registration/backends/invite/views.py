@@ -41,9 +41,12 @@ class InvitationCompleteView(TemplateView):
     template_name = 'registration/invitation_complete.html'
 
 
-class ActivationView(FormView):
-    template_name = 'registration/activation_form.html'
-    form_class = ActivationForm
+class BaseActivationView(object):
+
+    def get_context_data(self, **kwargs):
+        context = super(BaseActivationView, self).get_context_data(**kwargs)
+        context['profile'] = self.profile
+        return context
 
     @cached_property
     def profile(self):
@@ -53,22 +56,36 @@ class ActivationView(FormView):
         except RegistrationProfile.DoesNotExist:
             return None
 
-    def get_context_data(self, **kwargs):
-        context = super(ActivationView, self).get_context_data(**kwargs)
-        context['profile'] = self.profile
-        return context
+    def post(self, *args, **kwargs):
+        profile = self.profile
+        if profile is None or profile.activation_key_expired():
+            return super(BaseActivationView, self).get(*args, **kwargs)
+        return super(BaseActivationView, self).post(*args, **kwargs)
+
+    def activate(self, *args, **kwargs):
+        """
+        Given an activation key, look up and activate the user account corresponding to
+        that key (if possible).
+
+        After successful activation, the signal ``registration.signals.user_activated``
+        will be sent, with the newly activated ``User`` as the keyword argument ``user``
+        and the class of this backend as the sender.
+
+        """
+        activation_key = kwargs.get('activation_key')
+        activated_user = RegistrationProfile.objects.activate_user(activation_key)
+        return activated_user
+
+
+class ActivationView(BaseActivationView, FormView):
+    template_name = 'registration/activation_form.html'
+    form_class = ActivationForm
 
     def get_form_kwargs(self):
         kwargs = super(ActivationView, self).get_form_kwargs()
         if self.profile:
             kwargs['instance'] = self.profile.user
         return kwargs
-
-    def post(self, *args, **kwargs):
-        profile = self.profile
-        if profile is None or profile.activation_key_expired():
-            return super(ActivationView, self).get(*args, **kwargs)
-        return super(ActivationView, self).post(*args, **kwargs)
 
     @transaction.atomic
     def form_valid(self, form):
@@ -88,20 +105,6 @@ class ActivationView(FormView):
             except ValueError:
                 return redirect(success_url)
         return super(ActivationView, self).get(*args, **kwargs)
-
-    def activate(self, *args, **kwargs):
-        """
-        Given an activation key, look up and activate the user account corresponding to
-        that key (if possible).
-
-        After successful activation, the signal ``registration.signals.user_activated``
-        will be sent, with the newly activated ``User`` as the keyword argument ``user``
-        and the class of this backend as the sender.
-
-        """
-        activation_key = kwargs.get('activation_key')
-        activated_user = RegistrationProfile.objects.activate_user(activation_key)
-        return activated_user
 
     def get_success_url(self, user):
         return reverse('activation_complete', self.request)
