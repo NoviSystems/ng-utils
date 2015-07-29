@@ -54,5 +54,6 @@ class ActivationForm(forms.ModelForm):
         password = make_password(self.cleaned_data.get('password1'))
         self.cleaned_data['password'] = password
         del self.cleaned_data['password1']
-        del self.cleaned_data['password2']
+        if 'password2' in self.cleaned_data:
+            del self.cleaned_data['password2']
         return self.cleaned_data
