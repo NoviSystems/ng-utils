@@ -1,23 +1,10 @@
 
 from collections import OrderedDict
-from itng.common.decorators import login_exempt
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseRedirect
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 from django.views.generic.edit import ProcessFormView
 from django.utils.encoding import force_text
-
-__all__ = ('LoginExemptMixin', 'PublicMixin')
-
-
-class LoginExemptMixin(object):
-
-    @classmethod
-    def as_view(cls, **kwargs):
-        view = super(LoginExemptMixin, cls).as_view(**kwargs)
-        return login_exempt(view)
-
-PublicMixin = LoginExemptMixin
 
 
 class MultipleFormMixin(ContextMixin):
