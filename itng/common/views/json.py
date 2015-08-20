@@ -1,5 +1,6 @@
 
 from django.http import JsonResponse
+from django.views.generic.base import View, ContextMixin
 from django.views.generic.detail import BaseDetailView
 
 
@@ -33,3 +34,9 @@ class JSONResponseMixin(object):
 class JSONDetailView(JSONResponseMixin, BaseDetailView):
     def render_to_response(self, context, **response_kwargs):
         return self.render_to_json_response(context, **response_kwargs)
+
+
+class JSONView(JSONResponseMixin, ContextMixin, View):
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_json_response(context)
