@@ -1,10 +1,8 @@
 
 import BaseField from 'fields/base';
-import template from 'fields/templates/block-sub.html!text'
+import template from 'fields/templates/block-sub.html!text';
 
 
-var InlineField = BaseField.extend({
+export default BaseField.extend({
     template: template,
 });
-
-export default InlineField;
