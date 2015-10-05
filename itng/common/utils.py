@@ -24,6 +24,20 @@ def import_class(path):
     return getattr(module, class_name)
 
 
+class override_attr(object):
+    def __init__(self, instance, attribute, value):
+        self.instance = instance
+        self.attribute = attribute
+        self.value = value
+
+    def __enter__(self):
+        self.old_value = getattr(self.instance, self.attribute)
+        setattr(self.instance, self.attribute, self.value)
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        setattr(self.instance, self.attribute, self.old_value)
+
+
 def relative_viewname(viewname, resolver):
     """
     """

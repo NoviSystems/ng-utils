@@ -19,6 +19,9 @@ setup(
 
     install_requires=['ordered-set', ],
 
+    tests_require=['django', ],
+    test_suite='tests',
+
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
