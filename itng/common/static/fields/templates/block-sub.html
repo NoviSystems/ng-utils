@@ -8,7 +8,7 @@
 -->
 
 <div class="form-group" v-bind:class="{ 'has-error': hasError, }">
-    <content></content>
+    <slot></slot>
     <small class="help-block"><label class="control-label" v-bind:class="{ 'required': required, }" for="{{ inputId }}">{{ label }}</label></small>
     <small class="help-block" v-if="helpText">{{{ helpText }}}</small>
     <small class="help-block" v-for="error in errors">{{{ error }}}</small>

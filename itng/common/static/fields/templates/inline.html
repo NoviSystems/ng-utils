@@ -2,7 +2,7 @@
     <label class="control-label" v-bind:class="labelClass.concat(required ? ['required'] : [])" for="{{ inputId }}">{{ label }}</label>
 
     <div v-bind:class="inputClass">
-        <content></content>
+        <slot></slot>
         <span class="help-block" v-if="helpText">{{{ helpText }}}</span>
         <span class="help-block" v-for="error in errors">{{{ error }}}</span>
     </div>
