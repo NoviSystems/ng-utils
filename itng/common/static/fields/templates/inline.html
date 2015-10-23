@@ -1,9 +1,9 @@
-<div class="form-group" v-class="has-error : hasError">
-    <label class="control-label {{ labelClass }}" v-class="required: required" for="{{ inputId }}">{{ label }}</label>
+<div class="form-group" v-bind:class="{ 'has-error': hasError, }">
+    <label class="control-label" v-bind:class="labelClass.concat(required ? ['required'] : [])" for="{{ inputId }}">{{ label }}</label>
 
-    <div class="{{ inputClass }}">
+    <div v-bind:class="inputClass">
         <content></content>
         <span class="help-block" v-if="helpText">{{{ helpText }}}</span>
-        <span class="help-block" v-repeat="error: errors">{{{ error }}}</span>
+        <span class="help-block" v-for="error in errors">{{{ error }}}</span>
     </div>
 </div>

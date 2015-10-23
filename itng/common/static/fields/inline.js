@@ -4,15 +4,20 @@ import template from 'fields/templates/inline.html!text';
 
 
 export default BaseField.extend({
-    props: ['label', 'help-text', 'required', 'errors', 'label-class', 'input-class'],
+    props: {
+        label: {default: ''},
+        required: {default: true},
+        errors: {default: ''},
+        'help-text': {default: ''},
+        'label-class': {default: () => ['col-md-3', 'col-sm-5']},
+        'input-class': {default: () => ['col-md-9', 'col-sm-7']},
+    },
     template: template,
 
     data: function() {
         return {
             inputId: null,
             hasError: false,
-            labelClass: 'col-md-3 col-sm-5',
-            inputClass: 'col-md-9 col-sm-7',
         };
     },
 });
