@@ -15,7 +15,7 @@ export default Vue.extend({
     },
 
     attached: function() {
-        const $input = $(this.$el).find('input');
+        const $input = $(this.$el).find('input, textarea, select');
         $input.addClass('form-control');
         this.inputId = $input.attr('id');
     },
