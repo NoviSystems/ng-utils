@@ -25,12 +25,15 @@ export default function install(Vue) {
     Object.defineProperties(Vue.prototype, {
         $super: {
             get: function() {
-                const methods = this.constructor.super.options.methods;
+                // Use a separate object to hold bound methods, as
+                // we don't want to overwrite the unbound methods.
+                const unbound = this.constructor.super.options.methods;
+                const bound = {};
 
-                for (const key of Object.keys(methods))
-                    methods[key] = methods[key].bind(this);
+                for (const key of Object.keys(unbound))
+                    bound[key] = unbound[key].bind(this);
 
-                return methods;
+                return bound;
             },
         },
     });
