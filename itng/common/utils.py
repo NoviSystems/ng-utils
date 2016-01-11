@@ -24,7 +24,7 @@ def import_class(path):
     return getattr(module, class_name)
 
 
-class const_keys(dict):
+class constkeys_dict(dict):
     """
     dict subclass where keys are dot-accessible as their uppercased value.
     This is intended to be used with model choices/states, as constants are
@@ -32,7 +32,7 @@ class const_keys(dict):
 
     ex::
         class Example(models.Model):
-            states = const_keys({
+            states = constkeys_dict({
                 'new': 'New',
             })
             state = models.CharField(choices=states, default=states.NEW, max_length=8)
@@ -43,7 +43,7 @@ class const_keys(dict):
 
     """
     def __init__(self, *args, **kwargs):
-        super(const_keys, self).__init__(*args, **kwargs)
+        super(constkeys_dict, self).__init__(*args, **kwargs)
         for key in self:
             setattr(self, key.upper(), key)
 
