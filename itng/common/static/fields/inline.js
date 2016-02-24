@@ -20,4 +20,18 @@ export default BaseField.extend({
             hasError: false,
         };
     },
+    computed: {
+        labelClasses: function() {
+            const classes = ['control-label'];
+            if (this.required)
+                classes.push('required');
+
+            if (Array.isArray(this.labelClass))
+                classes.push(...this.labelClass);
+            else
+                classes.push(this.labelClass);
+
+            return classes;
+        },
+    },
 });

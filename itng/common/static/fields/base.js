@@ -21,6 +21,13 @@ export default Vue.extend({
     },
 
     computed: {
+        labelClasses: function() {
+            const classes = ['control-label'];
+            if (this.required)
+                classes.push('required');
+            return classes;
+        },
+
         hasError: function() {
             return !_.isEmpty(this.errors);
         },

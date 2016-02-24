@@ -1,5 +1,5 @@
 <div class="form-group" v-bind:class="{ 'has-error': hasError, }">
-    <label class="control-label" v-bind:class="labelClass.concat(required ? ['required'] : [])" for="{{ inputId }}">{{ label }}</label>
+    <label class="control-label" v-bind:class="labelClasses" for="{{ inputId }}">{{ label }}</label>
 
     <div v-bind:class="inputClass">
         <slot></slot>
