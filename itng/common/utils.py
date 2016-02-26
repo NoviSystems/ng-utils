@@ -1,4 +1,6 @@
 
+from django.conf import settings
+from django.contrib.sites.requests import RequestSite
 from django.core import urlresolvers
 from django.utils.encoding import smart_text
 
@@ -83,10 +85,8 @@ def reverse(viewname, request, urlconf=None, args=None, kwargs=None, current_app
 
 
 def get_site(request):
-    from django.contrib.sites.requests import RequestSite
-    from django.contrib.sites.models import Site
-
-    if Site._meta.installed:
+    if 'django.contrib.sites' in settings.INSTALLED_APPS:
+        from django.contrib.sites.models import Site
         return Site.objects.get_current()
     else:
         return RequestSite(request)
