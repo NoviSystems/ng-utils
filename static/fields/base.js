@@ -1,6 +1,5 @@
 
 import $ from 'bootstrap';
-import _ from 'underscore';
 import Vue from 'vue';
 
 
@@ -29,7 +28,7 @@ export default Vue.extend({
         },
 
         hasError: function() {
-            return !_.isEmpty(this.errors);
+            return this.errors !== undefined && this.errors.length === 0;
         },
     },
 });

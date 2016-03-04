@@ -1,6 +1,6 @@
 
 import Vue from 'vue';
-import template from 'inputs/templates/height.html!text';
+import template from './templates/height.html!text';
 
 
 export default Vue.extend({

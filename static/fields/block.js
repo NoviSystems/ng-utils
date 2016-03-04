@@ -1,6 +1,6 @@
 
-import BaseField from 'fields/base';
-import template from 'fields/templates/block.html!text';
+import BaseField from './base';
+import template from './templates/block.html!text';
 
 
 export default BaseField.extend({
