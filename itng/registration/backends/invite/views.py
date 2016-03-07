@@ -1,5 +1,6 @@
 from django.db import transaction
 from django.shortcuts import redirect
+from django.template.response import TemplateResponse
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView, FormView
 
@@ -56,11 +57,11 @@ class BaseActivationView(object):
         except RegistrationProfile.DoesNotExist:
             return None
 
-    def post(self, *args, **kwargs):
+    def dispatch(self, *args, **kwargs):
         profile = self.profile
         if profile is None or profile.activation_key_expired():
-            return super(BaseActivationView, self).get(*args, **kwargs)
-        return super(BaseActivationView, self).post(*args, **kwargs)
+            return TemplateResponse(self.request, 'registration/activation_code_invalid.html')
+        return super(BaseActivationView, self).dispatch(*args, **kwargs)
 
     def activate(self, *args, **kwargs):
         """
