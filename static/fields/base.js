@@ -28,7 +28,7 @@ export default Vue.extend({
         },
 
         hasError: function() {
-            return this.errors !== undefined && this.errors.length === 0;
+            return this.errors !== undefined && this.errors.length !== 0;
         },
     },
 });
