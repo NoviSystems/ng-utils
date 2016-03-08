@@ -1,6 +1,5 @@
 from django.db import transaction
 from django.shortcuts import redirect
-from django.template.response import TemplateResponse
 from django.views.generic import TemplateView, FormView
 
 from itng.common.utils import reverse

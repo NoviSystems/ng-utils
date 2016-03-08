@@ -17,10 +17,12 @@ from itng.registration.backends.invite import views
 
 
 urlpatterns = [
-    url(r'^activate/complete/$',                views.ActivationCompleteView.as_view(), name='activation_complete'),   # flake8: noqa
+    url(r'^activate/complete/$', views.ActivationCompleteView.as_view(), name='activation_complete'),
     # Activation keys get matched by \w+ instead of the more specific
     # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
     # that way it can return a sensible "invalid key" message instead of a
     # confusing 404.
-    url(r'^activate/(?P<activation_key>\w+)/$', views.ActivationView.as_view(),         name='activate'),              # flake8: noqa
+    # The activation key can make use of any character from the
+    # URL-safe base64 alphabet, plus the colon as a separator.
+    url(r'^activate/(?P<activation_key>[-:\w]+)/$', views.ActivationView.as_view(), name='activate'),
 ]
