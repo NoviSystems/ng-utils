@@ -2,7 +2,7 @@
 ## itng.registration.backends
 
 This package contains backends compatible with
-[ITNG/django-registration](/ITNG/django-registration).
+[django-registration](/ubernostrum/django-registration).
 
 Current backends:
 - [invite](invite)

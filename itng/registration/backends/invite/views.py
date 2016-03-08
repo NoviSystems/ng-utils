@@ -1,17 +1,15 @@
 from django.db import transaction
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.utils.functional import cached_property
 from django.views.generic import TemplateView, FormView
 
 from itng.common.utils import reverse
 
-from registration import signals, utils
+from registration import signals
 
-from registration.backends.default.views import RegistrationView
+from registration.backends.hmac.views import RegistrationView, ActivationView as BaseActivationView
 
 from .forms import InviteForm, ActivationForm
-from .models import RegistrationProfile
 
 __all__ = (
     'InvitationView', 'InvitationCompleteView',
@@ -23,59 +21,25 @@ class InvitationView(RegistrationView):
     template_name = 'registration/invitation_form.html'
     form_class = InviteForm
 
-    def register(self, form):
-        site = utils.get_site(self.request)
-
-        new_user = form.save(commit=False)
-        # using the proxy model with the invitation manager
-        RegistrationProfile.objects.invite_user(new_user, site)
-        signals.user_registered.send(sender=self.__class__,
-                                     user=new_user,
-                                     request=self.request)
-        return new_user
+    email_body_template = 'registration/invitation_email.txt'
+    email_subject_template = 'registration/invitation_email_subject.txt'
 
     def get_success_url(self, user):
         return reverse('invitation_complete', self.request)
 
+    def create_inactive_user(self, form):
+        new_user = form.save(commit=False)
+        new_user.is_active = False
+        new_user.set_unusable_password()
+        new_user.save()
+
+        self.send_activation_email(new_user)
+
+        return new_user
+
 
 class InvitationCompleteView(TemplateView):
     template_name = 'registration/invitation_complete.html'
-
-
-class BaseActivationView(object):
-
-    def get_context_data(self, **kwargs):
-        context = super(BaseActivationView, self).get_context_data(**kwargs)
-        context['profile'] = self.profile
-        return context
-
-    @cached_property
-    def profile(self):
-        activation_key = self.kwargs.get('activation_key')
-        try:
-            return RegistrationProfile.objects.get(activation_key=activation_key)
-        except RegistrationProfile.DoesNotExist:
-            return None
-
-    def dispatch(self, *args, **kwargs):
-        profile = self.profile
-        if profile is None or profile.activation_key_expired():
-            return TemplateResponse(self.request, 'registration/activation_code_invalid.html')
-        return super(BaseActivationView, self).dispatch(*args, **kwargs)
-
-    def activate(self, *args, **kwargs):
-        """
-        Given an activation key, look up and activate the user account corresponding to
-        that key (if possible).
-
-        After successful activation, the signal ``registration.signals.user_activated``
-        will be sent, with the newly activated ``User`` as the keyword argument ``user``
-        and the class of this backend as the sender.
-
-        """
-        activation_key = kwargs.get('activation_key')
-        activated_user = RegistrationProfile.objects.activate_user(activation_key)
-        return activated_user
 
 
 class ActivationView(BaseActivationView, FormView):
@@ -84,9 +48,14 @@ class ActivationView(BaseActivationView, FormView):
 
     def get_form_kwargs(self):
         kwargs = super(ActivationView, self).get_form_kwargs()
-        if self.profile:
-            kwargs['instance'] = self.profile.user
+        username = self.validate_key(kwargs.get('activation_key'))
+        if username:
+            kwargs['instance'] = self.get_user(username)
+
         return kwargs
+
+    def get(self, *args, **kwargs):
+        return super(FormView, self).get(*args, **kwargs)
 
     @transaction.atomic
     def form_valid(self, form):
