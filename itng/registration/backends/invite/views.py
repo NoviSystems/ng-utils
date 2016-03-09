@@ -26,6 +26,7 @@ class InvitationView(RegistrationView):
     def get_success_url(self, user):
         return reverse('invitation_complete', self.request)
 
+    @transaction.atomic
     def create_inactive_user(self, form):
         new_user = form.save(commit=False)
         new_user.is_active = False
@@ -44,6 +45,11 @@ class InvitationCompleteView(TemplateView):
 class ActivationView(BaseActivationView, FormView):
     template_name = 'registration/activation_form.html'
     form_class = ActivationForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ActivationView, self).get_context_data(**kwargs)
+        context['instance'] = context['form'].instance
+        return context
 
     def get_form_kwargs(self):
         kwargs = super(ActivationView, self).get_form_kwargs()
