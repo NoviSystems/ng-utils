@@ -26,17 +26,20 @@ def import_class(path):
     return getattr(module, class_name)
 
 
-class constkeys_dict(dict):
+class choices(tuple):
     """
-    dict subclass where keys are dot-accessible as their uppercased value.
-    This is intended to be used with model choices/states, as constants are
-    more durable to code changes than string literals.
+    Tuple subclass intended to be used with Django model choices/states. The
+    'key' of each choice is made dot-accessible as its uppercased value on
+    the main tuple. Using attributes is more durable to code changes than
+    string literals.
 
     ex::
         class Example(models.Model):
-            states = constkeys_dict({
-                'new': 'New',
-            })
+            states = choices((
+                ('new', 'New'),
+                ('draft', 'Draft'),
+                ('published', 'published'),
+            ))
             state = models.CharField(choices=states, default=states.NEW, max_length=8)
             ...
 
@@ -45,8 +48,8 @@ class constkeys_dict(dict):
 
     """
     def __init__(self, *args, **kwargs):
-        super(constkeys_dict, self).__init__(*args, **kwargs)
-        for key in self:
+        super(choices, self).__init__(*args, **kwargs)
+        for key, _ in self:
             setattr(self, key.upper(), key)
 
 
