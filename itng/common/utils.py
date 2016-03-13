@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.sites.requests import RequestSite
 from django.core import urlresolvers
 from django.utils.encoding import smart_text
+from django.utils import timezone
 
 
 def import_class(path):
@@ -118,3 +119,14 @@ class ModelPKIterator(ModelIterator):
 class ModelChoiceIterator(ModelIterator):
     def proc(self, obj):
         return (obj.pk, smart_text(obj))
+
+
+def timezone_aware(value):
+    """
+    Handle timezone awareness for datetimes
+    """
+    if settings.USE_TZ and timezone.is_naive(value):
+        return timezone.make_aware(value, timezone.get_current_timezone())
+    elif not settings.USE_TZ and timezone.is_aware(value):
+        return timezone.make_naive(value, timezone.UTC())
+    return value
