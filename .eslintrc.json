@@ -15,32 +15,18 @@
   },
   "rules": {
     "indent": 0,
-    "comma-dangle": [
-      2,
-      "always-multiline"
-    ],
-    "no-use-before-define": [
-      2,
-      "nofunc"
-    ],
     "func-names": 0,
-    "curly": [
-      2,
-      "multi-or-nest"
-    ],
-    "quote-props": [
-      2,
-      "as-needed",
-      {
-        "keywords": true
-      }
-    ],
-    "no-unused-vars": [
-      2,
-      {
+    "comma-dangle": [2, "always-multiline"],
+    "curly": [2, "multi-or-nest"],
+    "no-use-before-define": [2, "nofunc"],
+    "object-curly-spacing": [2, "never"],
+    "space-before-function-paren": [2, "never"],
+    "no-unused-vars": [2, {
         "vars": "all",
         "varsIgnorePattern": "__"
-      }
-    ]
+    }],
+    "quote-props": [2, "as-needed", {
+        "keywords": true
+    }]
   }
 }
