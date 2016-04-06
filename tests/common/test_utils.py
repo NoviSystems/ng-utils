@@ -31,6 +31,66 @@ class ChoicesTestCase(unittest.TestCase):
         with self.assertRaises(IndexError):
             opts[2]
 
+    def test_empty_choice(self):
+        opts = choices((
+            ('', 'N/A'),
+            ('a', 'A'),
+            ('b', 'B'),
+        ))
+
+        self.assertTrue(hasattr(opts, '__EMPTY__'))
+        self.assertEqual(opts.keys(), ['', 'a', 'b'])
+        self.assertEqual(opts.__EMPTY__, '')
+
+    def test_snake_case(self):
+        # dashes and whitespace => _
+        opts = choices((
+            ('a 1', 'A'),
+            ('b-2', 'B'),
+        ))
+        self.assertTrue(hasattr(opts, 'A_1'))
+        self.assertTrue(hasattr(opts, 'B_2'))
+
+    def test_keys(self):
+        opts = choices((
+            ('a', 'A'),
+            ('b', 'B'),
+        ))
+
+        self.assertEqual(opts.keys(), ['a', 'b'])
+
+    def test_values(self):
+        opts = choices((
+            ('a', 'A'),
+            ('b', 'B'),
+        ))
+
+        self.assertEqual(opts.values(), ['A', 'B'])
+
+    def test_boolean_type(self):
+        opts = choices((
+            (True, 'A'),
+            (False, 'B'),
+        ))
+
+        self.assertTrue(hasattr(opts, 'TRUE'))
+        self.assertTrue(hasattr(opts, 'FALSE'))
+        self.assertEqual(opts.TRUE, True)
+        self.assertEqual(opts.FALSE, False)
+        self.assertEqual(opts.keys(), [True, False])
+
+    def test_integer_type(self):
+        opts = choices((
+            (1, 'A'),
+            (2, 'B'),
+        ))
+
+        self.assertTrue(hasattr(opts, '_1'))
+        self.assertTrue(hasattr(opts, '_2'))
+        self.assertEqual(opts._1, 1)
+        self.assertEqual(opts._2, 2)
+        self.assertEqual(opts.keys(), [1, 2])
+
 
 class OverrideAttrTestCase(unittest.TestCase):
     def test_variable_reset(self):

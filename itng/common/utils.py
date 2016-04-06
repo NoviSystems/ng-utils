@@ -34,6 +34,11 @@ class choices(tuple):
     the main tuple. Using attributes is more durable to code changes than
     string literals.
 
+    Notes:
+    - Integer keys are made available as an underscore-prefixed attribute.
+    - Empty strings are made available as an ``__EMPTY__`` attribute.
+    - Whitespace and dashes are replaced with underscores
+
     ex::
         class Example(models.Model):
             states = choices((
@@ -50,8 +55,26 @@ class choices(tuple):
     """
     def __init__(self, *args, **kwargs):
         super(choices, self).__init__(*args, **kwargs)
+
         for key, _ in self:
-            setattr(self, key.upper(), key)
+            # Use explicit type check, as boolean literals are ints
+            if type(key) == int:
+                attr = '_%d' % key
+            elif key == '':
+                attr = '__EMPTY__'
+            else:
+                attr = str(key) \
+                    .replace('-', '_') \
+                    .upper()
+                attr = '_'.join(attr.split())
+
+            setattr(self, attr, key)
+
+    def keys(self):
+        return [key for key, _ in self]
+
+    def values(self):
+        return [value for _, value in self]
 
 
 class override_attr(object):
