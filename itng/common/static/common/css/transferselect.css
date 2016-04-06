@@ -3,10 +3,8 @@
     position: relative;
     margin-bottom: 10px;
 }
-.ts-select-wrapper {
-    background-color: #f9f9f9;
-}
 .transferselect .header {
+    background-color: #f9f9f9;
     border: 1px solid #cccccc;
     border-bottom: 0px;
     margin-bottom: 0px;
