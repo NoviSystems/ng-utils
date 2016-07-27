@@ -43,9 +43,9 @@ setup(
     author='Ryan P Kilby',
     author_email='rpkilby@ncsu.edu',
 
-    install_requires=['ordered-set', ],
+    install_requires=['ordered-set', 'shortuuid'],
 
-    tests_require=['django', ],
+    tests_require=['django', 'djangorestframework'],
 
     cmdclass={
         'test': Test,
