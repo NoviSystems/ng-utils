@@ -32,8 +32,9 @@ class Base64ImageField(ImageField):
         max_size_bytes = max_size * 1000**2
 
         if value.size > max_size_bytes:
-            raise ValidationError(_("The file you uploaded is larger than %dMB, "
-                                    "the maximum file upload size" % max_size))
+            raise ValidationError(_("The file you uploaded is larger than {max_size}MB, "
+                                    "the maximum file upload size")
+                                    .format(max_size=max_size))
 
 
 HTMLFormRenderer.default_style[Base64ImageField] = {
