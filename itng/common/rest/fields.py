@@ -29,7 +29,7 @@ class Base64ImageField(ImageField):
         # the combined size of image uploads in a single request. eg, a request
         # could potentially upload multiple images at the same time.
         max_size = getattr(settings, 'MAX_UPLOAD_SIZE', 2)
-        max_size_bytes = 2 * 1000**2
+        max_size_bytes = max_size * 1000**2
 
         if value.size > max_size_bytes:
             raise ValidationError(_("The file you uploaded is larger than %dMB, "
