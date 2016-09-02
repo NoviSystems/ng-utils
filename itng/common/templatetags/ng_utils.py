@@ -1,5 +1,9 @@
 
+import re
+
 from django import template
+from django.template.defaultfilters import stringfilter
+from django.utils.encoding import force_text
 from ordered_set import OrderedSet
 
 register = template.Library()
@@ -54,3 +58,15 @@ def isactive(context, url, active='active', inactive='', exact=False):
 
 # def ifactive
 # refer to {% ifequal %} implementation because it doesn't perform {% if %} condition parsing
+
+
+# Originally from: https://djangosnippets.org/snippets/1519/
+CONSONANT_SOUND = re.compile(r'''one(![ir])''', re.IGNORECASE | re.VERBOSE)
+VOWEL_SOUND = re.compile(r'''[aeio]|u([aeiou]|[^n][^aeiou]|ni[^dmnl]|nil[^l])|h(ier|onest|onou?r|ors\b|our(!i))|[fhlmnrsx]\b''', re.IGNORECASE | re.VERBOSE)
+
+@register.filter
+def an(text):
+    text = force_text(text)
+    match = not CONSONANT_SOUND.match(text) and VOWEL_SOUND.match(text)
+
+    return '%s %s' % ('an' if match else 'a', text)
