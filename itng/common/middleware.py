@@ -15,6 +15,7 @@ class LoginRequiredMiddleware(MiddlewareMixin):
     """
 
     def __init__(self, *args, **kwargs):
+        super(LoginRequiredMiddleware, self).__init__(*args, **kwargs)
         regexes = getattr(settings, 'LOGIN_EXEMPT_URLS', ())
         self.regexes = list(map(re.compile, regexes))
 
