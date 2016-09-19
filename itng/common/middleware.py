@@ -2,9 +2,10 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 import re
+from django.utils.deprecation import MiddlewareMixin
 
 
-class LoginRequiredMiddleware(object):
+class LoginRequiredMiddleware(MiddlewareMixin):
     """
     Middleware that requires users to be authenticated.
 
