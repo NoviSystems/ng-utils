@@ -54,8 +54,6 @@ class choices(tuple):
 
     """
     def __init__(self, *args, **kwargs):
-        super(choices, self).__init__(*args, **kwargs)
-
         for key, _ in self:
             # Use explicit type check, as boolean literals are ints
             if type(key) == int:
